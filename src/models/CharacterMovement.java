@@ -19,12 +19,32 @@ public class CharacterMovement implements KeyListener {
     private boolean isInteracting = false;
     private int frame = 0;
     private int stationNumber;
+    private float scaleConstant;
+    private int charMovement;
+    private final float PANEL_SECTION = .1f;
 
     public CharacterMovement(Customer student, GameRoom panel, Inventory inventory) {
 
         mStudent = student;
         mPanel = panel;
         mInventory = inventory;
+        
+        if (mPanel.getWidth() > mPanel.getHeight()){
+            scaleConstant = (float)(mStudent.width / (float)mPanel.getWidth());
+            charMovement = (int)(mPanel.getWidth() * PANEL_SECTION);
+        }
+        else{
+            scaleConstant = (float)(mStudent.height / (float)mPanel.getHeight());
+            charMovement = (int)(mPanel.getHeight() * PANEL_SECTION);
+        }
+        
+//        scaleConstantY = (float)(mStudent.height / (float)mPanel.getHeight());
+//        System.out.println("scaleConstantX = " + scaleConstantX);
+//        System.out.println("scaleConstantY = " + scaleConstantY);
+//        System.out.println("mStudent.width = " + mStudent.width);
+//        System.out.println("mStudent.height = " + mStudent.height);
+//        System.out.println("mPanel.getWidth() = " + mPanel.getWidth());
+//        System.out.println("mPanel.getHeight() = " + mPanel.getHeight());
     }
 
     @Override
@@ -34,8 +54,8 @@ public class CharacterMovement implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent ke) {
-        double tempLeftRight = mPanel.getWidth() * .00625;
-        double tempUpDown = mPanel.getHeight() * .00833333;
+//        double tempLeftRight = scaleConstantX;
+//        double tempUpDown = scaleConstantY;
 
         int oldX = mStudent.x;
         int oldY = mStudent.y;
@@ -58,7 +78,7 @@ public class CharacterMovement implements KeyListener {
                 } else if (frame > 9) {
                     frame = 0;
                 }
-                mStudent.x = mStudent.x + (int) tempLeftRight;
+                mStudent.x = mStudent.x + ((int) (scaleConstant * charMovement));
                 break;
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_A:
@@ -71,7 +91,7 @@ public class CharacterMovement implements KeyListener {
                 } else if (frame > 9) {
                     frame = 0;
                 }
-                mStudent.x = mStudent.x - (int) tempLeftRight;
+                mStudent.x = mStudent.x - ((int) (scaleConstant * charMovement));
                 break;
             case KeyEvent.VK_UP:
             case KeyEvent.VK_W:
@@ -84,7 +104,7 @@ public class CharacterMovement implements KeyListener {
                 } else if (frame > 9) {
                     frame = 0;
                 }
-                mStudent.y = mStudent.y - (int) tempUpDown;
+                mStudent.y = mStudent.y - ((int) (scaleConstant * charMovement));
                 break;
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_S:
@@ -97,7 +117,7 @@ public class CharacterMovement implements KeyListener {
                 } else if (frame > 9) {
                     frame = 0;
                 }
-                mStudent.y = mStudent.y + (int) tempUpDown;
+                mStudent.y = mStudent.y + ((int) (scaleConstant * charMovement));
                 break;
             default:
                 break;
