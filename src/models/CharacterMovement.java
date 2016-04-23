@@ -28,16 +28,7 @@ public class CharacterMovement implements KeyListener {
         mStudent = student;
         mPanel = panel;
         mInventory = inventory;
-        
-        if (mPanel.getWidth() > mPanel.getHeight()){
-            scaleConstant = (float)(mStudent.width / (float)mPanel.getWidth());
-            charMovement = (int)(mPanel.getWidth() * PANEL_SECTION);
-        }
-        else{
-            scaleConstant = (float)(mStudent.height / (float)mPanel.getHeight());
-            charMovement = (int)(mPanel.getHeight() * PANEL_SECTION);
-        }
-        
+                
 //        scaleConstantY = (float)(mStudent.height / (float)mPanel.getHeight());
 //        System.out.println("scaleConstantX = " + scaleConstantX);
 //        System.out.println("scaleConstantY = " + scaleConstantY);
@@ -56,6 +47,14 @@ public class CharacterMovement implements KeyListener {
     public void keyPressed(KeyEvent ke) {
 //        double tempLeftRight = scaleConstantX;
 //        double tempUpDown = scaleConstantY;
+        if (mPanel.getWidth() > mPanel.getHeight()){
+            scaleConstant = (float)(mStudent.width / (float)mPanel.getWidth());
+            charMovement = (int)(mPanel.getWidth() * PANEL_SECTION);
+        }
+        else{
+            scaleConstant = (float)(mStudent.height / (float)mPanel.getHeight());
+            charMovement = (int)(mPanel.getHeight() * PANEL_SECTION);
+        }
 
         int oldX = mStudent.x;
         int oldY = mStudent.y;
