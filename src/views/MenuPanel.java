@@ -129,6 +129,9 @@ public class MenuPanel extends JFrame{
     public void removeItemsFromInv(ActionListener al){    
        tossItems.addActionListener(al);
     }
+    public void buyItemsInInv(ActionListener al){
+        buyItems.addActionListener(al);
+    }
     
     public JButton getTossItems()
     {
@@ -220,6 +223,16 @@ public class MenuPanel extends JFrame{
         layoutConst.gridx = 1;
         layoutConst.gridy = 0;
         content.add(counterIntro, layoutConst);
+        
+        item = new JLabel("Item");
+        layoutConst.gridx = 0;
+        layoutConst.gridy = 1;
+        content.add(item, layoutConst);
+        
+        quantity = new JLabel("Quantity");
+        layoutConst.gridx = 1;
+        layoutConst.gridy = 1;
+        content.add(quantity, layoutConst);
         
         int i = 0;
         List keys = new ArrayList(charInventory.getMap().keySet());
