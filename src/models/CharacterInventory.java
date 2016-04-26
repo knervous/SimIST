@@ -19,6 +19,7 @@ public class CharacterInventory {
     private Map<String, Integer> map;
     private List keys;
     private List values;
+//    private float subTotal = 0;
 
     public CharacterInventory() {
         inventoryObjects = new ArrayList<>();
@@ -69,5 +70,11 @@ public class CharacterInventory {
     public void updateInventory() {
 
     }
+//    public float getSubtotal(){
+//        for (int i = 0; i < inventoryObjects.size(); i++){
+//            subTotal += inventoryObjects.get(i).getCost();
+//        }
+//        return subTotal;
+//    }
 
 }

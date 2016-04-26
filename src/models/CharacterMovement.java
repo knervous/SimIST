@@ -153,7 +153,6 @@ public class CharacterMovement implements KeyListener {
     }
 
 
-
     public String getFacing() {
         return facing;
     }

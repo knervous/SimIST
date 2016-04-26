@@ -18,8 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JSpinner.DefaultEditor;
-import java.awt.*;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -38,8 +38,10 @@ public class MenuPanel extends JFrame{
     private JLabel signIntro;
     private JLabel signMessage;
     private JLabel signCost;
+    private JLabel counterIntro;
     private JButton grabItems = new JButton("Grab Items");
     private JButton tossItems = new JButton("Toss Items");
+    private JButton buyItems = new JButton("Buy Items");
     private JSpinner quantSpin;
     private FoodStations infStation = new FoodStations();
     private ArrayList<JSpinner> allSpinners = new ArrayList<JSpinner>();
@@ -208,9 +210,52 @@ public class MenuPanel extends JFrame{
         
     }
     
-    public void populateCounterMenu(FrontCounterStation counterStation)
+    public void populateCounterMenu(CharacterInventory charInventory)
     {
+        content.removeAll();
+        content.setLayout(new GridBagLayout());
+        layoutConst.insets = new Insets(10, 10, 10, 10);
         
+        counterIntro = new JLabel("Welcome to Au Bon Pain! It's time to pay the piper.");
+        layoutConst.gridx = 1;
+        layoutConst.gridy = 0;
+        content.add(counterIntro, layoutConst);
+        
+        int i = 0;
+        List keys = new ArrayList(charInventory.getMap().keySet());
+        List values = new ArrayList(charInventory.getMap().values());
+        
+        while (i < charInventory.getMap().size()){
+            actualItem = new JLabel((String)keys.get(i));
+            layoutConst.gridx = 0;
+            layoutConst.gridy = i + offset;
+            content.add(actualItem, layoutConst);
+
+            actualQuantity = new JLabel(Integer.toString((int)values.get(i)));
+            layoutConst.gridx = 1;
+            layoutConst.gridy = i + offset;
+            content.add(actualQuantity, layoutConst);
+
+            quantSpin = new JSpinner(new SpinnerNumberModel(0.0, 0.0, (int)values.get(i), 1.0));
+            layoutConst.gridx = 2;
+            layoutConst.gridy = i + offset;
+            content.add(quantSpin, layoutConst);
+
+            ((DefaultEditor) quantSpin.getEditor()).getTextField().setEditable(false);
+            i++;
+            allSpinners.add(quantSpin);
+            }
+            
+        layoutConst.gridx = 0;
+        layoutConst.gridy = i + offset + 1;
+        content.add(buyItems, layoutConst);
+        
+        setContentPane(content);
+        setTitle("FRONT COUNTER");
+        setVisible(true);
+        pack();
+        setResizable(false);
+        setLocationRelativeTo(null);
     }
     
     public void populateSignMenu(String objectName, float objectCost)
@@ -238,5 +283,6 @@ public class MenuPanel extends JFrame{
         setVisible(true);
         pack();
         setResizable(false);
-        setLocationRelativeTo(null);    }
+        setLocationRelativeTo(null);    
+    }
 }

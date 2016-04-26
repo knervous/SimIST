@@ -233,9 +233,9 @@ public class GameRoomController {
 
                     switch (charMovement.getStationNumber()) {
 
-                        case 0:
+                    case 0:
+                        menuPanel.populateCounterMenu(student.getInventory());
                         System.out.println("counter initiated");
-
                         break;
                     case 1:
 //                            System.out.println("coffee initiated");
