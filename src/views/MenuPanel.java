@@ -215,6 +215,7 @@ public class MenuPanel extends JFrame{
     
     public void populateCounterMenu(CharacterInventory charInventory)
     {
+        allSpinners.clear();
         content.removeAll();
         content.setLayout(new GridBagLayout());
         layoutConst.insets = new Insets(10, 10, 10, 10);
@@ -297,5 +298,8 @@ public class MenuPanel extends JFrame{
         pack();
         setResizable(false);
         setLocationRelativeTo(null);    
+    }
+    public ArrayList<JSpinner> getSpinners(){
+        return allSpinners;
     }
 }

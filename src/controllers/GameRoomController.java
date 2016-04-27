@@ -1,6 +1,6 @@
 package controllers;
 
-import java.awt.Rectangle;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -16,9 +16,15 @@ import javax.sound.midi.Sequencer;
 import views.*;
 import models.*;
 import javax.swing.Timer;
-import java.awt.*;
+//import java.awt.*;
 import java.awt.event.ComponentEvent;
 import javax.swing.*;
+
+//import java.io.ByteArrayOutputStream;
+//import java.io.IOException;
+//import java.io.ObjectOutputStream;
+//import java.util.zip.GZIPOutputStream;
+//import java.util.Base64;
 
 /**
  *
@@ -39,6 +45,7 @@ public class GameRoomController {
     private StoreObjects signObject;
     private static final int CHANGE_INTERVAL = 900000;
     protected Sequencer sequence;
+//    static final Base64 base64 = new Base64();
 
     public GameRoomController(Customer inf_student, GameRoom inf_room) throws Exception {
         testFrame = new TestFrame();
@@ -85,6 +92,7 @@ public class GameRoomController {
         menuPanel.addItemsToInv(new AddItemListener());
         menuPanel.removeItemsFromInv(new RemoveItemListener());
         inventory.addUseListener(new UseItemListener());
+        menuPanel.buyItemsInInv(new BuyItemListener());
 
         /*
          SETTING KEYLISTENERS ON THE PANEL TO DETECT MOVEMENT
@@ -123,15 +131,15 @@ public class GameRoomController {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            System.out.printf("%s price returned from $%.2f", signObject.getName(), signObject.getCost());
+//            System.out.printf("%s price returned from $%.2f", signObject.getName(), signObject.getCost());
             signObject.changeCost((float) (signObject.getCost() * 1.176470588));
-            System.out.printf(" to $%.2f\n", signObject.getCost());
+//            System.out.printf(" to $%.2f\n", signObject.getCost());
             
             signObject = randomize.getRandObject(randomize.getAllFood());
-            System.out.println("Food Object: " + signObject.getName());
-            System.out.printf("Price changed from $%.2f", signObject.getCost());
+//            System.out.println("Food Object: " + signObject.getName());
+//            System.out.printf("Price changed from $%.2f", signObject.getCost());
             signObject.changeCost((float) (signObject.getCost() * .85));
-            System.out.printf(" to $%.2f\n", signObject.getCost());
+//            System.out.printf(" to $%.2f\n", signObject.getCost());
         }
         // Got rid of duplicate code here. George
     }
@@ -154,6 +162,37 @@ public class GameRoomController {
 
             }
             menuPanel.dispose();
+        }
+    }
+    public class BuyItemListener implements ActionListener {
+        private List keys = new ArrayList(student.getInventory().getMap().keySet());
+        private List values = new ArrayList(student.getInventory().getMap().values());
+        @Override
+        public void actionPerformed(ActionEvent ae){
+            System.out.println("keys.size() = " + keys.size());
+            System.out.println("menuPanel.getSpinners().size() = " + menuPanel.getSpinners().size());
+            System.out.println("values.size() = " + values.size());
+//            for (int i = 0; i < menuPanel.getSpinners().size(); i++){
+            for (int i = 0; i < keys.size(); i++){
+                System.out.println(student.getInventory().getInventoryObjects().get(i).getName());
+                System.out.println(keys.get(i) + "");
+                int k = 0;
+                for (int j = 0; j < student.getInventory().getInventoryObjects().size(); j++){
+                    if (student.getInventory().getInventoryObjects().get(j).getName().equalsIgnoreCase(keys.get(i) + "")){
+                        System.out.println("Working up to this point.");
+                        student.getInventory().getInventoryObjects().get(k).setPaidFor(true);
+                        System.out.println("setPaidFor(k) = " + student.getInventory().getInventoryObjects().get(k).getPaidFor());
+                        k++;
+                        if (k == (int)menuPanel.getSpinners().get(i).getValue()){
+                            break;
+                        }
+//                        while (k < (int)menuPanel.getSpinners().get(i).getValue()){
+//                            student.getInventory().getInventoryObjects().get(k).setPaidFor(true);
+//                        }
+                    
+                    }
+                }
+            }
         }
     }
 
@@ -308,4 +347,19 @@ public class GameRoomController {
         }
 
     }
+//    public static String serializeObjectToString(Object object){
+//        String stringToReturn = "";
+//        try (
+//                ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+//                GZIPOutputStream gzipOutputStream = new GZIPOutputStream(arrayOutputStream);
+//                ObjectOutputStream objectOutputStream = new ObjectOutputStream(gzipOutputStream);){
+//            objectOutputStream.writeObject(object);
+//            objectOutputStream.flush();
+//            stringToReturn = new String(Base64.encode(arrayOutputStream.toByteArray()));
+//        }
+//        catch(IOException e){
+//            e.printStackTrace();
+//        }
+//        return stringToReturn;
+//    }
 }
