@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import views.Inventory;
 import java.awt.event.KeyListener;
+import views.AuBonPainPanel;
 import views.GameRoom;
 
 public class CharacterMovement implements KeyListener {
@@ -144,7 +145,8 @@ public class CharacterMovement implements KeyListener {
             }
 
         }
-        
+        if(mPanel instanceof AuBonPainPanel)
+        {
         for(NPC npc : mPanel.getNPCs())
         {
             if (mStudent.intersects(npc)) {
@@ -152,6 +154,7 @@ public class CharacterMovement implements KeyListener {
                 mStudent.y = oldY;
                 
             }
+        }
         }
 
     }

@@ -101,10 +101,13 @@ public class GameRoomController {
         gameTimer.start();
         signTimer = new Timer(CHANGE_INTERVAL, new SignTimer());
         signTimer.start();
+        if(room instanceof AuBonPainPanel)
+        {
         npcTimer = new Timer(25, new NPCTimer());
         npcTimer.start();
         npcSpawnTimer = new Timer((int) (4500 - (cpv.getRate() * 4.4)), new NPCSpawnTimer());
         npcSpawnTimer.start();
+        }
 
         /*
          SETTING LISTENERS ON BUTTONS FOR ADDING/SUBTRACTING/USING FROM INVENTORY
@@ -143,9 +146,11 @@ public class GameRoomController {
             if (inventory != null) {
                 inventory.getContainer().repaint();
             }
-
+            if(room instanceof AuBonPainPanel)
+            {
             npcSpawnTimer.setDelay((int) (4500 - (cpv.getRate() * 4.4)));
             npcTimer.setDelay(48-cpv.getSpeed());
+            }
         }
     }
     
