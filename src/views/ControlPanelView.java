@@ -37,7 +37,16 @@ public class ControlPanelView extends JFrame{
         {
             return spawnRate.getValue();
         }
-               
+        
+        public JSlider getSliderOne()
+        {
+            return npcSpeed;
+        }
+        
+        public JSlider getSliderTwo()
+        {
+            return spawnRate;
+        }
 
        
        

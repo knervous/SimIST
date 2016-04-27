@@ -19,6 +19,8 @@ import models.*;
 import javax.swing.Timer;
 //import java.awt.*;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.*;
 
 //import java.io.ByteArrayOutputStream;
@@ -66,13 +68,17 @@ public class GameRoomController {
         inventory = new Inventory();
         charMovement = new CharacterMovement(student, room, inventory);
         testFrame.add(room, BorderLayout.CENTER);
-
+        
         signObject = randomize.getRandObject(randomize.getAllFood());
         signObject.changeCost((float) (signObject.getCost() * .85));
         if (room instanceof AuBonPainPanel) {
             cpv = new ControlPanelView();
             cpv.setLocationRelativeTo(testFrame);
             cpv.setLocation(cpv.getX(), cpv.getY() - 330);
+            room.requestFocus();
+            cpv.addMouseListener(new FocusRequester());
+            cpv.getSliderOne().addMouseListener(new FocusRequester());
+            cpv.getSliderTwo().addMouseListener(new FocusRequester());
         }
         addKeyListeners();
 
@@ -133,7 +139,7 @@ public class GameRoomController {
         public void actionPerformed(ActionEvent ae) {
 
             room.repaint();
-
+            
             if (inventory != null) {
                 inventory.getContainer().repaint();
             }
@@ -141,6 +147,32 @@ public class GameRoomController {
             npcSpawnTimer.setDelay((int) (4500 - (cpv.getRate() * 4.4)));
             npcTimer.setDelay(48-cpv.getSpeed());
         }
+    }
+    
+    private class FocusRequester implements MouseListener
+    {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            room.requestFocus();
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
+        
     }
 
     private class NPCSpawnTimer implements ActionListener {
