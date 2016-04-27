@@ -26,7 +26,6 @@ import javax.swing.*;
 //import java.io.ObjectOutputStream;
 //import java.util.zip.GZIPOutputStream;
 //import java.util.Base64;
-
 /**
  *
  * @author Paul
@@ -67,10 +66,10 @@ public class GameRoomController {
         inventory = new Inventory();
         charMovement = new CharacterMovement(student, room, inventory);
         testFrame.add(room, BorderLayout.CENTER);
-        
+
         signObject = randomize.getRandObject(randomize.getAllFood());
         signObject.changeCost((float) (signObject.getCost() * .85));
- 
+
         addKeyListeners();
 
         InputStream is;
@@ -137,25 +136,20 @@ public class GameRoomController {
 
         }
     }
-    
+
     private class NPCSpawnTimer implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             int rand = new Random().nextInt(2);
-            if(rand == 0)
-            {
-            }
-            else
-            {
-                npcs.add(new NPC(new Random().nextInt(16)+1));
+            if (rand == 0) {
+            } else {
+                npcs.add(new NPC(new Random().nextInt(16) + 1));
             }
 
         }
 
     }
-    
-    
 
     private class NPCTimer implements ActionListener {
 
@@ -179,8 +173,8 @@ public class GameRoomController {
             int ydif;
             ArrayList<NPC> toRemove = new ArrayList<>();
             for (NPC npc : npcs) {
-                System.out.println(customerInteracting);    
-                
+                System.out.println(customerInteracting);
+
                 if (animationScaler % 100 == 0) {
 
                     switch (npc.getDirectionMoving()) {
@@ -240,38 +234,31 @@ public class GameRoomController {
                             npc.setDirectionMoving("down");
                         }
                     }
-                    
-                    for(NPC mNpc : npcs)
-                    {
-                        if((npc.intersects(mNpc) && npc != mNpc) || npc.intersects(student))
-                        {
+
+                    for (NPC mNpc : npcs) {
+                        if ((npc.intersects(mNpc) && npc != mNpc) || npc.intersects(student)) {
                             npc.x = oldX;
                             npc.y = oldY;
-   
+
                         }
-                        if(npc.intersects(mNpc) && npc != mNpc)
-                        {
-                        if(npc.x < 100)
-                            {
+                        if (npc.intersects(mNpc) && npc != mNpc) {
+                            if (npc.x < 100) {
                                 toRemove.add(npc);
                             }
                         }
                     }
-                    
+
                 }
-                
-                if(npc.x > 850)
-                {
+
+                if (npc.x > 850) {
                     toRemove.add(npc);
                 }
             }
-            for(NPC removeNPC : toRemove)
-            {
+            for (NPC removeNPC : toRemove) {
                 npcs.remove(removeNPC);
             }
             toRemove.clear();
-            
-            
+
         }
     }
 
@@ -282,7 +269,7 @@ public class GameRoomController {
 //            System.out.printf("%s price returned from $%.2f", signObject.getName(), signObject.getCost());
             signObject.changeCost((float) (signObject.getCost() * 1.176470588));
 //            System.out.printf(" to $%.2f\n", signObject.getCost());
-            
+
             signObject = randomize.getRandObject(randomize.getAllFood());
 //            System.out.println("Food Object: " + signObject.getName());
 //            System.out.printf("Price changed from $%.2f", signObject.getCost());
@@ -291,14 +278,13 @@ public class GameRoomController {
         }
         // Got rid of duplicate code here. George
     }
-    
+
 
     /*
     
      ADD ITEM FROM STATION BUTTON
     
      */
-
     public class AddItemListener implements ActionListener {
 
         @Override
@@ -312,32 +298,35 @@ public class GameRoomController {
             menuPanel.dispose();
         }
     }
+
     public class BuyItemListener implements ActionListener {
+
         private List keys = new ArrayList(student.getInventory().getMap().keySet());
         private List values = new ArrayList(student.getInventory().getMap().values());
+
         @Override
-        public void actionPerformed(ActionEvent ae){
+        public void actionPerformed(ActionEvent ae) {
             System.out.println("keys.size() = " + keys.size());
             System.out.println("menuPanel.getSpinners().size() = " + menuPanel.getSpinners().size());
             System.out.println("values.size() = " + values.size());
 //            for (int i = 0; i < menuPanel.getSpinners().size(); i++){
-            for (int i = 0; i < keys.size(); i++){
+            for (int i = 0; i < keys.size(); i++) {
                 System.out.println(student.getInventory().getInventoryObjects().get(i).getName());
                 System.out.println(keys.get(i) + "");
                 int k = 0;
-                for (int j = 0; j < student.getInventory().getInventoryObjects().size(); j++){
-                    if (student.getInventory().getInventoryObjects().get(j).getName().equalsIgnoreCase(keys.get(i) + "")){
+                for (int j = 0; j < student.getInventory().getInventoryObjects().size(); j++) {
+                    if (student.getInventory().getInventoryObjects().get(j).getName().equalsIgnoreCase(keys.get(i) + "")) {
                         System.out.println("Working up to this point.");
                         student.getInventory().getInventoryObjects().get(k).setPaidFor(true);
                         System.out.println("setPaidFor(k) = " + student.getInventory().getInventoryObjects().get(k).getPaidFor());
                         k++;
-                        if (k == (int)menuPanel.getSpinners().get(i).getValue()){
+                        if (k == (int) menuPanel.getSpinners().get(i).getValue()) {
                             break;
                         }
 //                        while (k < (int)menuPanel.getSpinners().get(i).getValue()){
 //                            student.getInventory().getInventoryObjects().get(k).setPaidFor(true);
 //                        }
-                    
+
                     }
                 }
             }
@@ -385,7 +374,7 @@ public class GameRoomController {
         @Override
         public void actionPerformed(ActionEvent ae) {
             student.getInventory().removeItem(inventory.getItemSelected(), 1.0);
-            
+
             if (student.getInventory().getMap().get(inventory.getItemSelected().getName()) < 1) {
                 student.getInventory().getInventoryObjects().remove(inventory.getItemSelected());
                 student.getInventory().getMap().remove((String) inventory.getItemSelected().getName());
@@ -416,44 +405,60 @@ public class GameRoomController {
                 menuPanel.dispose();
             }
             if (room instanceof AuBonPainPanel) {
+                for (NPC npc : npcs) {
+                    if (ke.getKeyCode() == KeyEvent.VK_P && Math.abs(student.getCenterX() - npc.getCenterX()) < 75 && Math.abs(student.getCenterY() - npc.getCenterY()) < 75) {
+                        Point position = new Point((int) npc.getX(), (int) npc.getY());
+                        double angle = getAngle(npc.getLocation(), student.getLocation());
+                        double scale_y = Math.cos(Math.toRadians(angle)) * 50;
+                        double scale_x = Math.sin(Math.toRadians(angle)) * 50;
+                        position.setLocation(position.x - scale_x, position.y + scale_y);
+                        npc.setLocation(position);
+                        for (NPC npc2 : npcs) {
+                            while ((npc.intersects(npc2) && npc != npc2) || npc.intersects(student)) {
+                                npc2.y --;
+                                npc2.x --;
+                            }
+                        }
+                    }
+                }
                 if (ke.getKeyCode() == KeyEvent.VK_SPACE && charMovement.getIsInteracting()) {
 
                     switch (charMovement.getStationNumber()) {
 
-                    case 0:
-                        menuPanel.populateCounterMenu(student.getInventory());
-                        System.out.println("counter initiated");
-                        break;
-                    case 1:
+                        case 0:
+                            menuPanel.populateCounterMenu(student.getInventory());
+                            System.out.println("counter initiated");
+                            break;
+                        case 1:
 //                            System.out.println("coffee initiated");
-                        menuPanel.populateFoodMenu(new CoffeeStation(randomize.getCoffeeObjects()));
-                        break;
-                    case 2:
+                            menuPanel.populateFoodMenu(new CoffeeStation(randomize.getCoffeeObjects()));
+                            break;
+                        case 2:
 //                            System.out.println("sign initiated");
-                        menuPanel.populateSignMenu(signObject.getName(), signObject.getCost());
-                        break;
-                    case 3:
+                            menuPanel.populateSignMenu(signObject.getName(), signObject.getCost());
+                            break;
+                        case 3:
 //                            System.out.println("trash initiated");
-                        menuPanel.populateTrashMenu(new TrashStation(), student.getInventory());
-                        break;
-                    case 4:
+                            menuPanel.populateTrashMenu(new TrashStation(), student.getInventory());
+                            break;
+                        case 4:
 //                            System.out.println("bakery initiated");
-                        menuPanel.populateFoodMenu(new BreadStation(randomize.getBakeryObjects()));
-                        break;
-                    case 5:
+                            menuPanel.populateFoodMenu(new BreadStation(randomize.getBakeryObjects()));
+                            break;
+                        case 5:
 //                            System.out.println("fruit initiated");
-                        menuPanel.populateFoodMenu(new FruitStation(randomize.getFruitObjects()));
-                        break;
-                    case 6:
+                            menuPanel.populateFoodMenu(new FruitStation(randomize.getFruitObjects()));
+                            break;
+                        case 6:
 //                            System.out.println("soup initiated");
-                        menuPanel.populateFoodMenu(new SoupStation(randomize.getSoupObjects()));
-                        break;
-                    case 7:
+                            menuPanel.populateFoodMenu(new SoupStation(randomize.getSoupObjects()));
+                            break;
+                        case 7:
 //                            System.out.println("cooler initiated");
-                        menuPanel.populateFoodMenu(new CoolerStation(randomize.getCoolerObjects()));
-                        break;
-                    case 8:
-                        break;
+                            menuPanel.populateFoodMenu(new CoolerStation(randomize.getCoolerObjects()));
+                            break;
+                        case 8:
+                            break;
 
                     }
                 }
@@ -465,6 +470,16 @@ public class GameRoomController {
         @Override
         public void keyReleased(KeyEvent ke) {
 
+        }
+
+        public double getAngle(Point center, Point target) {
+            double theta = Math.atan2(target.y - center.y, target.x - center.x);
+            theta += Math.PI / 2.0;
+            double angle = Math.toDegrees(theta);
+            if (angle < 0) {
+                angle += 360;
+            }
+            return angle;
         }
     }
 

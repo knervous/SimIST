@@ -17,7 +17,7 @@ public class NPC extends Rectangle {
     private String animation;
     private int pathingPoint = 0;
     private int frame = 0;
-    private String directionMoving = "left";
+    private String directionMoving = "right";
 
     public NPC(int npcType) {
         for (int i = 1; i < 17; i++) {
