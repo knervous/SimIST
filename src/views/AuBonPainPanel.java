@@ -47,7 +47,7 @@ public class AuBonPainPanel extends GameRoom {
         super();
         student = inf_Student;
         setSize(800,600);
-        cashier = new NPC(new Random().nextInt(16));
+        cashier = new NPC(new Random().nextInt(15));
         setPreferredSize(new Dimension(800, 600));
         setLayout(null);
         add(temp);

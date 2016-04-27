@@ -49,11 +49,11 @@ public class GameRoomController {
     protected Sequencer sequence;
     private ArrayList<NPC> npcs;
     private boolean customerInteracting = false;
-//    static final Base64 base64 = new Base64();
+    ControlPanelView cpv;
 
+//    static final Base64 base64 = new Base64();
     public GameRoomController(Customer inf_student, GameRoom inf_room) throws Exception {
         testFrame = new TestFrame();
-
         student = inf_student;
         stations = new FoodStations();
         npcs = new ArrayList<>();
@@ -69,7 +69,11 @@ public class GameRoomController {
 
         signObject = randomize.getRandObject(randomize.getAllFood());
         signObject.changeCost((float) (signObject.getCost() * .85));
-
+        if (room instanceof AuBonPainPanel) {
+            cpv = new ControlPanelView();
+            cpv.setLocationRelativeTo(testFrame);
+            cpv.setLocation(cpv.getX(), cpv.getY() - 330);
+        }
         addKeyListeners();
 
         InputStream is;
@@ -93,7 +97,7 @@ public class GameRoomController {
         signTimer.start();
         npcTimer = new Timer(25, new NPCTimer());
         npcTimer.start();
-        npcSpawnTimer = new Timer(4000, new NPCSpawnTimer());
+        npcSpawnTimer = new Timer((int) (4500 - (cpv.getRate() * 4.4)), new NPCSpawnTimer());
         npcSpawnTimer.start();
 
         /*
@@ -134,6 +138,8 @@ public class GameRoomController {
                 inventory.getContainer().repaint();
             }
 
+            npcSpawnTimer.setDelay((int) (4500 - (cpv.getRate() * 4.4)));
+            npcTimer.setDelay(48-cpv.getSpeed());
         }
     }
 
@@ -415,8 +421,8 @@ public class GameRoomController {
                         npc.setLocation(position);
                         for (NPC npc2 : npcs) {
                             while ((npc.intersects(npc2) && npc != npc2) || npc.intersects(student)) {
-                                npc2.y --;
-                                npc2.x --;
+                                npc2.y--;
+                                npc2.x--;
                             }
                         }
                     }
