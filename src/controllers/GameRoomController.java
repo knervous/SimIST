@@ -534,12 +534,22 @@ public class GameRoomController {
             JFrame placeHolder = (JFrame) ce.getSource();
             if (room instanceof AuBonPainPanel) {
                 student.setBounds(placeHolder.getWidth() - student.width * 2, Math.round(placeHolder.getHeight() - student.height * 2.5f), student.width, student.height);
+                double temp = testFrame.getHeight() * .54823529;;
+            int moveUp = (int) temp;
+            cpv.setLocationRelativeTo(testFrame);
+            cpv.setLocation(cpv.getX(), cpv.getY() - moveUp);
+            cpv.setSize(testFrame.getWidth()-16, cpv.getHeight());
             }
         }
 
         @Override
         public void componentMoved(ComponentEvent ce) {
-
+            
+            double temp = testFrame.getHeight() * .54823529;;
+            int moveUp = (int) temp;
+            cpv.setLocationRelativeTo(testFrame);
+            cpv.setLocation(cpv.getX(), cpv.getY() - moveUp);
+            cpv.setSize(testFrame.getWidth()-16, cpv.getHeight());
         }
 
         @Override
@@ -550,6 +560,7 @@ public class GameRoomController {
         public void componentHidden(ComponentEvent ce) {
             sequence.stop();
             testFrame.dispose();
+            cpv.dispose();
         }
 
     }

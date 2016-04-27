@@ -15,9 +15,9 @@ public class ControlPanelView extends JFrame{
        private JLabel rate = new JLabel("Spawn Rate");
 
         public ControlPanelView(){
-        
+        setUndecorated(true);
         setVisible(true);
-        setSize(800,75);
+        setSize(784,75);
         setLayout(new GridLayout(1,4));
         add(npcSpeed);
         add(speed);
