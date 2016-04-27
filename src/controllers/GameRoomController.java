@@ -216,7 +216,6 @@ public class GameRoomController {
             int ydif;
             ArrayList<NPC> toRemove = new ArrayList<>();
             for (NPC npc : npcs) {
-                System.out.println(customerInteracting);
 
                 if (animationScaler % 100 == 0) {
 
@@ -349,6 +348,9 @@ public class GameRoomController {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
+            List keys = new ArrayList(student.getInventory().getMap().keySet());
+            List values = new ArrayList(student.getInventory().getMap().values());
+            
             System.out.println("keys.size() = " + keys.size());
             System.out.println("menuPanel.getSpinners().size() = " + menuPanel.getSpinners().size());
             System.out.println("values.size() = " + values.size());
@@ -356,14 +358,14 @@ public class GameRoomController {
             for (int i = 0; i < keys.size(); i++) {
                 System.out.println(student.getInventory().getInventoryObjects().get(i).getName());
                 System.out.println(keys.get(i) + "");
-                int k = 0;
+                double k = 0;
                 for (int j = 0; j < student.getInventory().getInventoryObjects().size(); j++) {
                     if (student.getInventory().getInventoryObjects().get(j).getName().equalsIgnoreCase(keys.get(i) + "")) {
                         System.out.println("Working up to this point.");
-                        student.getInventory().getInventoryObjects().get(k).setPaidFor(true);
-                        System.out.println("setPaidFor(k) = " + student.getInventory().getInventoryObjects().get(k).getPaidFor());
+                        student.getInventory().getInventoryObjects().get((int)k).setPaidFor(true);
+                        System.out.println("setPaidFor(k) = " + student.getInventory().getInventoryObjects().get((int)k).getPaidFor());
                         k++;
-                        if (k == (int) menuPanel.getSpinners().get(i).getValue()) {
+                        if (k ==  (double) menuPanel.getSpinners().get(i).getValue()) {
                             break;
                         }
 //                        while (k < (int)menuPanel.getSpinners().get(i).getValue()){
