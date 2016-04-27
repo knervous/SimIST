@@ -8,6 +8,7 @@ package views;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import models.NPC;
 
 /**
  *
@@ -16,5 +17,7 @@ import javax.swing.JPanel;
 public abstract class GameRoom extends JPanel{
     
     public abstract ArrayList<Rectangle> getStations();
+    public abstract void setNPCs(ArrayList<NPC> set);
+    public abstract ArrayList<NPC> getNPCs();
     
 }

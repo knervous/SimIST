@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import models.NPC;
 
 /**
  *
@@ -140,6 +141,11 @@ public class Room206 extends GameRoom {
     public ArrayList<Rectangle> getStations() {
         return new ArrayList<>(Arrays.asList(shelf1, shelf2, longtable, middletable1, middletable2, middletable3, middletable4, middletable5, middletable6, shorttable, cornertable1, cornertable2, key, wallUD1, wallUD2, wallLR1, wallLR2));
     }
+    @Override
+    public ArrayList<NPC> getNPCs()
+    {
+        return null;
+    }
 
     public Rectangle getShelf1()
     {
@@ -223,6 +229,11 @@ public class Room206 extends GameRoom {
         g.drawImage(new ImageIcon("room206.png").getImage(), 0, 0, null);
         g.drawImage(new ImageIcon(student.getAnimation()).getImage(), student.x, student.y, student.width, student.height, null);
 
+    }
+
+    @Override
+    public void setNPCs(ArrayList<NPC> set) {
+       
     }
 
    

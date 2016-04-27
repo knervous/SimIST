@@ -1,6 +1,7 @@
 package controllers;
 
 import java.awt.BorderLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -42,9 +43,13 @@ public class GameRoomController {
     private Inventory inventory;
     private TestFrame testFrame;
     private static Timer signTimer;
+    private Timer npcTimer;
+    private Timer npcSpawnTimer;
     private StoreObjects signObject;
     private static final int CHANGE_INTERVAL = 900000;
     protected Sequencer sequence;
+    private ArrayList<NPC> npcs;
+    private boolean customerInteracting = false;
 //    static final Base64 base64 = new Base64();
 
     public GameRoomController(Customer inf_student, GameRoom inf_room) throws Exception {
@@ -52,7 +57,9 @@ public class GameRoomController {
 
         student = inf_student;
         stations = new FoodStations();
+        npcs = new ArrayList<>();
         room = inf_room;
+        room.setNPCs(npcs);
         testFrame.setSize(room.getSize());
         room.setFocusable(true);
         randomize = new Randomize();
@@ -85,6 +92,10 @@ public class GameRoomController {
         gameTimer.start();
         signTimer = new Timer(CHANGE_INTERVAL, new SignTimer());
         signTimer.start();
+        npcTimer = new Timer(25, new NPCTimer());
+        npcTimer.start();
+        npcSpawnTimer = new Timer(4000, new NPCSpawnTimer());
+        npcSpawnTimer.start();
 
         /*
          SETTING LISTENERS ON BUTTONS FOR ADDING/SUBTRACTING/USING FROM INVENTORY
@@ -124,6 +135,143 @@ public class GameRoomController {
                 inventory.getContainer().repaint();
             }
 
+        }
+    }
+    
+    private class NPCSpawnTimer implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int rand = new Random().nextInt(2);
+            if(rand == 0)
+            {
+            }
+            else
+            {
+                npcs.add(new NPC(new Random().nextInt(16)+1));
+            }
+
+        }
+
+    }
+    
+    
+
+    private class NPCTimer implements ActionListener {
+
+        private final ArrayList<Point> pathingPoints = new ArrayList<>();
+        private int animationScaler = 0;
+        private int customerWaitTime = 0;
+
+        public NPCTimer() {
+            pathingPoints.add(new Point(230, 400));
+            pathingPoints.add(new Point(230, 240));
+            pathingPoints.add(new Point(570, 240));
+            pathingPoints.add(new Point(570, 435));
+            pathingPoints.add(new Point(900, 435));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            animationScaler += 10;
+            customerWaitTime += 10;
+            int xdif;
+            int ydif;
+            ArrayList<NPC> toRemove = new ArrayList<>();
+            for (NPC npc : npcs) {
+                System.out.println(customerInteracting);    
+                
+                if (animationScaler % 100 == 0) {
+
+                    switch (npc.getDirectionMoving()) {
+                        case "right":
+                            npc.setAnimation(npc.getAnimations()[npc.getFrameAnimation() + 5]);
+                            npc.setFrameAnimation(npc.getFrameAnimation() + 1);
+                            break;
+                        case "up":
+                            npc.setAnimation(npc.getAnimations()[npc.getFrameAnimation() + 9]);
+                            npc.setFrameAnimation(npc.getFrameAnimation() + 1);
+                            break;
+                        case "down":
+                            npc.setAnimation(npc.getAnimations()[npc.getFrameAnimation() + 1]);
+                            npc.setFrameAnimation(npc.getFrameAnimation() + 1);
+                            break;
+                        case "left":
+                            npc.setAnimation(npc.getAnimations()[npc.getFrameAnimation() + 13]);
+                            npc.setFrameAnimation(npc.getFrameAnimation() + 1);
+                            break;
+                    }
+                    if (npc.getFrameAnimation() > 3) {
+                        npc.setFrameAnimation(0);
+                    }
+                }
+                for (int i = 0; i < pathingPoints.size(); i++) {
+                    int oldX = npc.x;
+                    int oldY = npc.y;
+
+                    if (pathingPoints.get(i).x == npc.x && pathingPoints.get(i).y == npc.y) {
+                        if (i == 2 && customerWaitTime % 5000 != 0) {
+                            customerInteracting = true;
+
+                        } else {
+                            npc.setPathingPoint(npc.getPathingPoint() + 1);
+                            customerInteracting = false;
+                        }
+                    }
+                    if (npc.getPathingPoint() == i) {
+
+                        xdif = pathingPoints.get(i).x - npc.x;
+                        ydif = npc.y - pathingPoints.get(i).y;
+
+                        if (xdif > 0) {
+                            npc.setLocation(npc.x + 1, npc.y);
+                            npc.setDirectionMoving("right");
+
+                        } else if (xdif < 0) {
+                            npc.setLocation(npc.x - 1, npc.y);
+                            npc.setDirectionMoving("left");
+                        }
+
+                        if (ydif > 0) {
+                            npc.setLocation(npc.x, npc.y - 1);
+                            npc.setDirectionMoving("up");
+                        } else if (ydif < 0) {
+                            npc.setLocation(npc.x, npc.y + 1);
+                            npc.setDirectionMoving("down");
+                        }
+                    }
+                    
+                    for(NPC mNpc : npcs)
+                    {
+                        if((npc.intersects(mNpc) && npc != mNpc) || npc.intersects(student))
+                        {
+                            npc.x = oldX;
+                            npc.y = oldY;
+   
+                        }
+                        if(npc.intersects(mNpc) && npc != mNpc)
+                        {
+                        if(npc.x < 100)
+                            {
+                                toRemove.add(npc);
+                            }
+                        }
+                    }
+                    
+                }
+                
+                if(npc.x > 850)
+                {
+                    toRemove.add(npc);
+                }
+            }
+            for(NPC removeNPC : toRemove)
+            {
+                npcs.remove(removeNPC);
+            }
+            toRemove.clear();
+            
+            
         }
     }
 

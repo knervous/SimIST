@@ -8,10 +8,10 @@ package views;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import models.Customer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import models.NPC;
 
 /**
  *
@@ -72,6 +72,16 @@ public class MeetingRoomPanel extends GameRoom {
     public ArrayList<Rectangle> getStations() {
 
         return new ArrayList<>(Arrays.asList(table, projector));
+    }
+
+    @Override
+    public void setNPCs(ArrayList<NPC> set) {
+        
+    }
+
+    @Override
+    public ArrayList<NPC> getNPCs() {
+       return null;
     }
 
 }

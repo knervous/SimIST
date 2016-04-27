@@ -144,6 +144,15 @@ public class CharacterMovement implements KeyListener {
             }
 
         }
+        
+        for(NPC npc : mPanel.getNPCs())
+        {
+            if (mStudent.intersects(npc)) {
+                mStudent.x = oldX;
+                mStudent.y = oldY;
+                
+            }
+        }
 
     }
 

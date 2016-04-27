@@ -36,10 +36,10 @@ public class AuBonPainPanel extends GameRoom {
     private Rectangle fruit;
     private Rectangle soup;
     private Rectangle cooler;
-    private Rectangle exitOutside;
-    private Rectangle exitCompSci;
-    private CharacterMovement characterMovement;
     private Customer student;
+    private ArrayList<NPC> npcs;
+    private NPC cashier;
+    
 
     private JLabel temp = new JLabel();
 
@@ -47,7 +47,7 @@ public class AuBonPainPanel extends GameRoom {
         super();
         student = inf_Student;
         setSize(800,600);
-
+        cashier = new NPC(new Random().nextInt(16));
         setPreferredSize(new Dimension(800, 600));
         setLayout(null);
         add(temp);
@@ -72,12 +72,22 @@ public class AuBonPainPanel extends GameRoom {
         fruit = new Rectangle();
         soup = new Rectangle();
         cooler = new Rectangle();
-        exitCompSci = new Rectangle();
 
     }
-
+    
+    @Override
+    public void setNPCs(ArrayList<NPC> set)
+    {
+        npcs = set;
+    }
+    
+    @Override
+    public ArrayList<NPC> getNPCs()
+    {
+        return npcs;
+    }
     public ArrayList<Rectangle> getStations() {
-        return new ArrayList<>(Arrays.asList(counter, coffee, sign, trash, bakery, fruit, soup, cooler, exitCompSci));
+        return new ArrayList<>(Arrays.asList(counter, coffee, sign, trash, bakery, fruit, soup, cooler));
     }
 
     public void setKeyListener(KeyListener kl) {
@@ -92,8 +102,13 @@ public class AuBonPainPanel extends GameRoom {
         double playerWidth = getParent().getWidth() * .06;
         g.drawImage(new ImageIcon("floor.png").getImage(), 0, 0, getParent().getWidth(), getParent().getHeight(), null);
         g.drawImage(new ImageIcon(student.getAnimation()).getImage(), student.x, student.y, (int) playerWidth, (int) playerHeight, null);
-
+        for(NPC npc : npcs)
+        {
+            g.drawImage(new ImageIcon(npc.getAnimation()).getImage(), npc.x, npc.y, npc.width, npc.height, null);
+        }
+        g.drawImage(new ImageIcon(cashier.getAnimations()[13]).getImage(), 660, 225, cashier.width, cashier.height, null);
         refreshStations();
+        
     }
 
     public void refreshStations() {
@@ -106,7 +121,6 @@ public class AuBonPainPanel extends GameRoom {
         fruit.setBounds(0, 0, Math.round(getParent().getWidth() * .15f), Math.round(getParent().getHeight() * .15f));
         soup.setBounds(Math.round(getParent().getWidth() * .18f), 0, Math.round(getParent().getWidth() * .18f), Math.round(getParent().getHeight() * .067f));
         cooler.setBounds(Math.round(getParent().getWidth() * .4f), 0, Math.round(getParent().getWidth() * .4f), Math.round(getParent().getHeight() * .08f));
-        exitCompSci.setBounds(0, Math.round(getParent().getHeight() * .7f), 10, Math.round(getParent().getHeight() * .17f));
     }
 
 }
